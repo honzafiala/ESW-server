@@ -49,6 +49,16 @@ void EpollConn::handleEvent(uint32_t events)
         messageSize = htonl(messageSize);
         printf("Message size: %d\n", messageSize);
 
+        std::string messageBuffer(messageSize, 0);
+        read(fd, &messageBuffer[0], messageSize);
+
+        Request request;
+        request.ParseFromString(messageBuffer);
+
+        Walk walk = request.walk();
+
+        for (int i = 0; i < walk.locations_size(); i++) 
+            printf("%d %d\n", walk.locations(i).x(), walk.locations(i).y());
 
         int count = read(fd, buffer, BUF_SIZE-1);
         printf("Read: %.*s\n", count, buffer);
