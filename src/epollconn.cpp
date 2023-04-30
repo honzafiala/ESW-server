@@ -10,6 +10,9 @@
 #include <fcntl.h>
 #include <string.h>
 
+#include "proto/messages.pb.h"
+
+
 #include <algorithm>    // std::find
 
 EpollConn::EpollConn(int cfd, EpollInstance &e) : EpollFd(-1, e)
@@ -31,6 +34,8 @@ void send_len(int fd, int len) {
     write(fd, msg, strlen(msg));
 }
 
+
+
 void EpollConn::handleEvent(uint32_t events)
 {
     #define BUF_SIZE 1024
@@ -39,6 +44,12 @@ void EpollConn::handleEvent(uint32_t events)
         unregisterFd();
         delete this;
     } else {
+        uint32_t messageSize;
+        int rec = read(fd, (void *) &messageSize, 4);
+        messageSize = htonl(messageSize);
+        printf("Message size: %d\n", messageSize);
+
+
         int count = read(fd, buffer, BUF_SIZE-1);
         printf("Read: %.*s\n", count, buffer);
         for (int i = 0; i < count; i++) {

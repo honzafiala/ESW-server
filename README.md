@@ -1,0 +1,1 @@
+protoc -I=src/ --cpp_out=src/ /proto/measurements.proto 

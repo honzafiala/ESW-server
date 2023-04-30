@@ -1,3 +1,0 @@
-/home/honza/ESW/server/CMakeFiles/rebuild_cache.dir
-/home/honza/ESW/server/CMakeFiles/edit_cache.dir
-/home/honza/ESW/server/CMakeFiles/epoll_server.dir

@@ -45,11 +45,7 @@ EpollSocket::EpollSocket(EpollInstance &e, int port) : EpollFd(-1, e), ep(e)
     */
 
     int ret = listen(sfd, SOMAXCONN);
-    printf("listening %d\n", ret);
 
-    printf("Accepted !\n");
-   //  int cfd = accept(sfd, NULL, NULL);
-  //  printf("Accepted: %d\n", cfd);
     fd = sfd;
     registerFd(EPOLLIN | EPOLLHUP);
 }
@@ -65,8 +61,8 @@ void EpollSocket::handleEvent(uint32_t events)
     if ((events & EPOLLERR) || (events & EPOLLHUP) || !(events & EPOLLIN)) {
         unregisterFd();
     } else {
-        printf("New connection!\n");
     int cfd = accept4(fd, NULL, NULL, O_NONBLOCK);
+    printf("New connection: %cfd!\n");
     EpollConn * conn = new EpollConn(cfd, ep);
     }
 }
