@@ -12,6 +12,8 @@
 
 #include "proto/messages.pb.h"
 
+#include "request.h"
+
 
 #include <algorithm>    // std::find
 
@@ -55,19 +57,7 @@ void EpollConn::handleEvent(uint32_t events)
         Request request;
         request.ParseFromString(messageBuffer);
 
-        Walk walk = request.walk();
+        ServerRequest serverRequest(request);
 
-        for (int i = 0; i < walk.locations_size(); i++) 
-            printf("%d %d\n", walk.locations(i).x(), walk.locations(i).y());
-
-        int count = read(fd, buffer, BUF_SIZE-1);
-        printf("Read: %.*s\n", count, buffer);
-        for (int i = 0; i < count; i++) {
-            if (buffer[i] == '\n') {
-                send_len(fd, prev);
-                prev = 0;
-            }
-            else prev++;
-        }
     }
 }
