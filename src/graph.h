@@ -34,15 +34,12 @@ public:
     }
 
     void add_neighbor(uint32_t dist, int64_t neighbor_id) {
-        printf("Adding edge %d -> %d\n", id, neighbor_id);
         if (neighbors.count(neighbor_id)) {
             Edge edge = neighbors[neighbor_id];
             neighbors[neighbor_id].dist = edge.dist + dist;
             neighbors[neighbor_id].count = edge.count + 1;
-            printf("edge already exists\n");
         } else {
             neighbors[neighbor_id] = {dist, 1};
-            printf("Created new edge\n");
         }
     }
 
@@ -59,6 +56,7 @@ public:
     int64_t searchTree(int64_t nodeId, std::pair<uint32_t, uint32_t> point, double distance_threshold, bool x_axis);
     void addPoints(Point a, Point b, int32_t dist);
     uint64_t oneToOne(int64_t aId, int64_t bId);
+    int64_t oneToAll(int64_t aId);
 private:
     std::shared_mutex m;
 

@@ -31,12 +31,55 @@ struct PathNode {
     int nodeId;
     uint64_t distance;
 
-    PathNode(int id, int dist) : nodeId(id), distance(dist) {}
+    PathNode(int64_t id, int64_t dist) : nodeId(id), distance(dist) {}
 
     bool operator>(const PathNode& other) const {
         return distance > other.distance;
     }
 };
+
+
+int64_t Graph::oneToAll(int64_t aId) {
+    m.lock_shared();
+
+    std::vector<uint64_t> dist(nodes.size(), static_cast<uint64_t>(std::numeric_limits<uint64_t>::max()));
+    dist[aId] = 0;
+
+    std::priority_queue<PathNode, std::vector<PathNode>, std::greater<>> pq;
+    pq.push(PathNode(aId, 0));
+
+    for (auto d : dist){
+        cout << "d: " << d << endl;
+    }
+    printf("----------\n");
+
+    while (!pq.empty()) {
+        PathNode u = pq.top();
+        pq.pop();
+
+        for (auto v : nodes[u.nodeId].neighbors) {
+            int64_t vId = v.first;
+            int64_t alt = u.distance + v.second.dist / v.second.count;; 
+            if (alt < dist[vId]) {
+                pq.push(PathNode(vId, alt));
+                dist[vId] = alt;
+                printf("Setting %d to %d\n", vId, alt);
+            }
+        }
+    }
+
+    m.unlock_shared();
+
+    int64_t ret = 0;
+    for (auto d : dist){
+        if (d < std::numeric_limits<uint64_t>::max()) ret += d;
+        cout << "d: " << d << endl;
+    }
+    
+    return ret;
+}
+
+
 
 uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
     m.lock_shared();
@@ -154,7 +197,6 @@ int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double
     }
     double dist = dist_squared(point, make_pair(nodes[nodeId].x, nodes[nodeId].y));
     if (dist <= distance_threshold * distance_threshold) {
-        printf("Found node %d with distance %ld\n", nodeId, dist);
         return nodeId;
     } 
 

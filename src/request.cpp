@@ -67,17 +67,24 @@ Response ServerRequest::getResponse(Request requestMessage) {
 
         printf("Path len: %d\n", ret);
 
-
-        for (auto node : graph.nodes) {
-            if (dist_squared(make_pair(src.x, src.y), make_pair(node.x, node.y)) <= 500 * 500) printf("src close to %d\n", node.id);
-            if (dist_squared(make_pair(dst.x, dst.y), make_pair(node.x, node.y)) <= 500 * 500) printf("dst close to %d\n", node.id);
-        }
-
-
-
         response.set_shortest_path_length(ret);
 
         response.set_total_length(0);
+    } else if (requestMessage.has_onetoall()) {
+        printf("OnetoAll request.\n");
+        OneToAll oneToAll = requestMessage.onetoall();
+
+        Point src = {oneToAll.origin().x(), oneToAll.origin().y()};
+
+        int64_t srcId = graph.findNear(0, src.x, src.y);
+
+        int64_t ret = graph.oneToAll(srcId);
+
+        printf("Path len: %d\n", ret);
+
+        response.set_total_length(ret);
+
+        response.set_shortest_path_length(0);
     }
 
     return response; 

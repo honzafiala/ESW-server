@@ -50,6 +50,10 @@
         "typeinfo": "cpp",
         "mutex": "cpp",
         "shared_mutex": "cpp",
-        "condition_variable": "cpp"
+        "condition_variable": "cpp",
+        "ctime": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp"
     }
 }
