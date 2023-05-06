@@ -49,7 +49,6 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
     
     std::vector<bool> closed(nodes.size(), false);
 
-    //std::queue<int64_t> q(std::deque<int64_t>(dist.begin(), dist.end()));
 
 
     std::priority_queue<PathNode, std::vector<PathNode>, std::greater<>> pq;
@@ -60,6 +59,8 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
         
         PathNode u = pq.top();
         pq.pop();
+
+        if (u.nodeId == bId) break;
 
         for (auto v : nodes[u.nodeId].neighbors) {
             int64_t vId = v.first;
