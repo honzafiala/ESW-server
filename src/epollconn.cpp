@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <string.h>
+#include <cerrno>
 
 #include "proto/messages.pb.h"
 
@@ -36,7 +37,7 @@ void send_len(int fd, int len) {
     write(fd, msg, strlen(msg));
 }
 
-
+uint32_t total_read = 0;
 
 void EpollConn::handleEvent(uint32_t events)
 {
@@ -46,18 +47,51 @@ void EpollConn::handleEvent(uint32_t events)
         unregisterFd();
         delete this;
     } else {
+
+
+        while (true) {
+
         uint32_t messageSize;
         int rec = read(fd, (void *) &messageSize, 4);
+        
+
+        if (rec < 0) {
+            printf("Rec = %d, total: %d!\n", rec, total_read);
+            exit(0);
+        } else {
+            total_read += rec;
+        }
+
+        if (rec == 0) {
+            printf("EOF!\n");
+            return;
+        }
+
+
         messageSize = htonl(messageSize);
         printf("Message size: %d\n", messageSize);
 
+
         std::string messageBuffer(messageSize, 0);
-        read(fd, &messageBuffer[0], messageSize);
+        rec = read(fd, &messageBuffer[0], messageSize);
+        printf("Received: %d, errno: %d\n", rec, errno);
+
+        if (rec < 0) {
+            printf("Rec = %d, total: %d!\n", rec, total_read);
+            exit(0);
+        } else {
+            total_read += rec;
+        }
+      
 
         Request request;
         request.ParseFromString(messageBuffer);
 
-        ServerRequest serverRequest(request);
+        ServerRequest serverRequest;
+
+        Response response = serverRequest.getResponse(request);
+        
+        }
 
     }
 }
