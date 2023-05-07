@@ -6,6 +6,8 @@
 #include "epollfd.h"
 #include "epollinstance.h"
 
+#include "proto/messages.pb.h"
+
 
 class TCPConnection : public EpollFd
 {
@@ -18,6 +20,7 @@ private:
     uint32_t messageSize = 0;
     int readData = 0;
     std::string messageBuffer;
+    void sendResponse(Response responseMessage);
 };
 
 #endif // EpollConn_H

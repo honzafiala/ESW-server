@@ -41,7 +41,7 @@ void send_len(int fd, int len) {
 
 uint32_t total_read = 0;
 
-void sendResponse(Response response) {
+void TCPConnection::sendResponse(Response responseMessage) {
     std::string serializedMessage;
     responseMessage.SerializeToString(&serializedMessage);
 
@@ -82,7 +82,7 @@ void TCPConnection::handleEvent(uint32_t events)
                 if (rec == 0) printf("EOF\n");
                 if (rec <= 0) return;
                 total += rec;
-                messageSize = nltoh(messageSize);
+                messageSize = ntohl(messageSize);
                 readData = 0;
                // printf("Size: %d\n", messageSize);
             } 
