@@ -52,7 +52,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
         response.set_shortest_path_length(0);
         response.set_total_length(0);
     } else if (requestMessage.has_onetoone()) {
-        printf("OnetoOne request.\n");
+        printf("OnetoOne request.\n"); 
         OneToOne oneToOne = requestMessage.onetoone();
 
         Point src = {oneToOne.origin().x(), oneToOne.origin().y()};

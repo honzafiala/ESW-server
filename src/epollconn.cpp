@@ -41,6 +41,17 @@ void send_len(int fd, int len) {
 
 uint32_t total_read = 0;
 
+void sendResponse(Response response) {
+    std::string serializedMessage;
+    responseMessage.SerializeToString(&serializedMessage);
+
+    uint32_t responseSize = htonl(serializedMessage.size());
+    write(fd, (void *) &responseSize, sizeof(responseSize));
+
+    write(fd, serializedMessage.c_str(), serializedMessage.size());
+}
+
+
 void TCPConnection::handleEvent(uint32_t events)
 {
     printf("\nEvents: %d\n", events);
@@ -63,13 +74,15 @@ void TCPConnection::handleEvent(uint32_t events)
                 ServerRequest serverRequest;
                 Response response = serverRequest.getResponse(request);
 
+                sendResponse(response);
+
             }
             if (messageSize == 0) {
                 rec = read(fd, (void *) &messageSize, 4);
                 if (rec == 0) printf("EOF\n");
                 if (rec <= 0) return;
                 total += rec;
-                messageSize = htonl(messageSize);
+                messageSize = nltoh(messageSize);
                 readData = 0;
                // printf("Size: %d\n", messageSize);
             } 
