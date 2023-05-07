@@ -66,6 +66,7 @@ void TCPConnection::handleEvent(uint32_t events)
             }
             if (messageSize == 0) {
                 rec = read(fd, (void *) &messageSize, 4);
+                if (rec == 0) printf("EOF\n");
                 if (rec <= 0) return;
                 total += rec;
                 messageSize = htonl(messageSize);
@@ -75,6 +76,7 @@ void TCPConnection::handleEvent(uint32_t events)
             if (readData < messageSize) {
                 if (readData == 0) messageBuffer.resize(messageSize);
                 rec = read(fd, &messageBuffer[readData], messageSize - readData);
+                if (rec == 0) printf("EOF\n");
                 if (rec <= 0) return;
                 total += rec;
                 readData += rec;
