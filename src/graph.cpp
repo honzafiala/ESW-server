@@ -24,7 +24,7 @@ static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> 
 
 
 Graph::Graph() {
-   // this->nodes.push_back(Node(0, 0));
+   printf("Created a graph instance\n");
 }
 
 struct PathNode {
@@ -114,7 +114,6 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
             }
         }
     }
-
     m.unlock_shared();
 
    
@@ -219,6 +218,6 @@ int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double
 }
 
 int64_t Graph::findNear(int64_t nodeId, uint32_t x, uint32_t y) {
-
-    return searchTree(nodeId, make_pair(x, y), (double) 500, true);
+    int64_t ret = searchTree(nodeId, make_pair(x, y), (double) 500, true);
+    return ret;
 }
