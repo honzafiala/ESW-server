@@ -28,9 +28,9 @@ TCPConnection::TCPConnection(int cfd, EpollInstance &e) : EpollFd(-1, e)
 
 TCPConnection::~TCPConnection()
 {
-    unregisterFd();
-    printf("delete this\n");
-    delete this;
+    // unregisterFd();
+    // printf("delete this\n");
+    // delete this;
 }
 
 void send_len(int fd, int len) {
@@ -58,6 +58,7 @@ void TCPConnection::handleEvent(uint32_t events)
     if (events > 1) {
         close:
         unregisterFd();
+        close(fd);
         printf("Closing connection\n");
         delete this;
     } else {
@@ -97,31 +98,5 @@ void TCPConnection::handleEvent(uint32_t events)
                // printf("Read %d, %d\n", rec, total);
             }
         }
-
-        // This handler should call read() until no more data are available (until -1 is returned by the function).
-        // The handler is only called agan when more data is available in EPOLLET mode, so it will not be called 
-        // again when not all data are read when the handler is called.
-
-
-        // std::string messageBuffer(messageSize, 0);
-        // rec = read(fd, &messageBuffer[0], messageSize);
-        // printf("Received: %d, errno: %d\n", rec, errno);
-
-        // if (rec < 0) {
-        //     printf("Rec = %d, total: %d!\n", rec, total_read);
-        //     exit(0);
-        // } else {
-        //     total_read += rec;
-        // }
-      
-
-        // Request request;
-        // request.ParseFromString(messageBuffer);
-
-        // ServerRequest serverRequest;
-
-        // Response response = serverRequest.getResponse(request);
-        
-
     }
 }
