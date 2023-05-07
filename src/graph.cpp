@@ -48,10 +48,7 @@ int64_t Graph::oneToAll(int64_t aId) {
     std::priority_queue<PathNode, std::vector<PathNode>, std::greater<>> pq;
     pq.push(PathNode(aId, 0));
 
-    for (auto d : dist){
-        cout << "d: " << d << endl;
-    }
-    printf("----------\n");
+
 
     while (!pq.empty()) {
         PathNode u = pq.top();
@@ -59,11 +56,11 @@ int64_t Graph::oneToAll(int64_t aId) {
 
         for (auto v : nodes[u.nodeId].neighbors) {
             int64_t vId = v.first;
-            int64_t alt = u.distance + v.second.dist / v.second.count;; 
+            int64_t alt = u.distance + v.second.dist / v.second.count;
             if (alt < dist[vId]) {
                 pq.push(PathNode(vId, alt));
                 dist[vId] = alt;
-                printf("Setting %d to %d\n", vId, alt);
+               // printf("Setting %d to %d\n", vId, alt);
             }
         }
     }
@@ -72,8 +69,10 @@ int64_t Graph::oneToAll(int64_t aId) {
 
     int64_t ret = 0;
     for (auto d : dist){
-        if (d < std::numeric_limits<uint64_t>::max()) ret += d;
-        cout << "d: " << d << endl;
+        if (d < std::numeric_limits<uint64_t>::max()) {
+            ret += d;
+            //printf("ret = %ld\n", ret);
+        }
     }
     
     return ret;

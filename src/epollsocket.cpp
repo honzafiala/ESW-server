@@ -63,6 +63,6 @@ void EpollSocket::handleEvent(uint32_t events)
     } else {
     int cfd = accept4(fd, NULL, NULL, O_NONBLOCK);
     printf("New connection: %cfd!\n");
-    EpollConn * conn = new EpollConn(cfd, ep);
+    TCPConnection * conn = new TCPConnection(cfd, ep);
     }
 }

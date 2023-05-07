@@ -16,7 +16,7 @@ public:
     void handleEvent(uint32_t events);
 private:
     EpollInstance &ep;
-    std::list<EpollConn *> conns;
+    std::list<TCPConnection *> conns;
 };
 
 #endif // EpollSocket_H

@@ -31,11 +31,9 @@ static void find_node(int64_t start, int rep, int64_t dst) {
 
 void ServerRequest::addWalk(Walk walk) {
     for (int i = 0; i < walk.locations_size() - 1; i++) {
-        printf("-------------------------------------\n");
 
         Point a = {walk.locations(i).x(), walk.locations(i).y()};
         Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
-        printf("Adding points (%d, %d), (%d, %d) %d\n", a.x, a.y, b.x, b.y, walk.lengths(i));
 
         graph.addPoints(a, b, walk.lengths(i));
     }
@@ -80,7 +78,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
 
         int64_t ret = graph.oneToAll(srcId);
 
-        printf("Path len: %d\n", ret);
+        printf("Path len: %ld\n", ret);
 
         response.set_total_length(ret);
 
