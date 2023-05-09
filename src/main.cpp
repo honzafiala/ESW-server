@@ -18,6 +18,9 @@
 
 using namespace std;
 
+EpollInstance ep;
+
+
 void threadFunction(int threadId) {
     while (1) {
         ep.waitAndHandleEvents();
@@ -54,7 +57,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    EpollInstance ep;
     EpollSocket socket(ep, atoi(argv[1]));
 
      std::vector<std::thread> threads; // Vector to store thread objects

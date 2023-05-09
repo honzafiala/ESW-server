@@ -30,7 +30,9 @@ public:
     std::map<uint64_t, Edge> neighbors;
 
     Node(uint32_t x_val, uint32_t y_val) : x(x_val), y(y_val), left(-1), right(-1) {
+       // m.lock();
         id = id_count++;
+       // m.unlock();
     }
 
     void add_neighbor(uint32_t dist, int64_t neighbor_id) {
@@ -57,7 +59,6 @@ public:
     void addPoints(Point a, Point b, int32_t dist);
     uint64_t oneToOne(int64_t aId, int64_t bId);
     int64_t oneToAll(int64_t aId);
-private:
     std::shared_mutex m;
 
 };
