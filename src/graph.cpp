@@ -40,7 +40,7 @@ struct PathNode {
 
 
 int64_t Graph::oneToAll(int64_t aId) {
-    m.lock_shared();
+  //  m.lock_shared();
 
     std::vector<uint64_t> dist(nodes.size(), static_cast<uint64_t>(std::numeric_limits<uint64_t>::max()));
     dist[aId] = 0;
@@ -65,7 +65,7 @@ int64_t Graph::oneToAll(int64_t aId) {
         }
     }
 
-    m.unlock_shared();
+   // m.unlock_shared();
 
     int64_t ret = 0;
     for (auto d : dist){
@@ -81,7 +81,7 @@ int64_t Graph::oneToAll(int64_t aId) {
 
 
 uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
-    m.lock_shared();
+   // m.lock_shared();
 
 
     std::vector<uint64_t> dist(nodes.size(), numeric_limits<uint64_t>::max());
@@ -114,7 +114,7 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
             }
         }
     }
-    m.unlock_shared();
+   // m.unlock_shared();
 
    
     
@@ -125,7 +125,7 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
 
 
 int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
-    m.lock();
+   // m.lock();
         int64_t aId = findNear(0, a.x, a.y);
         if (aId < 0) aId = addNode(0, a.x, a.y, true);
         
@@ -134,7 +134,7 @@ int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
         if (bId < 0) bId = addNode(0, b.x, b.y, true);
         int64_t ret = bId;
         nodes[aId].add_neighbor(dist, bId);
-    m.unlock();
+  //  m.unlock();
     return ret;
 }
 
