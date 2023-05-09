@@ -124,16 +124,18 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
 
 
 
-void Graph::addPoints(Point a, Point b, int32_t dist) {
+int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
     m.lock();
         int64_t aId = findNear(0, a.x, a.y);
         if (aId < 0) aId = addNode(0, a.x, a.y, true);
         
-        int64_t bId = findNear(0, b.x, b.y);
+        int64_t bId = prev_dest;
+        if (bId < 0) bId = findNear(0, b.x, b.y);
         if (bId < 0) bId = addNode(0, b.x, b.y, true);
-
+        int64_t ret = bId;
         nodes[aId].add_neighbor(dist, bId);
     m.unlock();
+    return ret;
 }
 
 int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {

@@ -56,7 +56,7 @@ public:
     void printTRee(int64_t nodeId);
     int64_t findNear(int64_t nodeId, uint32_t x, uint32_t y);
     int64_t searchTree(int64_t nodeId, std::pair<uint32_t, uint32_t> point, double distance_threshold, bool x_axis);
-    void addPoints(Point a, Point b, int32_t dist);
+    int64_t addPoints(Point a, Point b, int64_t prev_dest, int32_t dist);
     uint64_t oneToOne(int64_t aId, int64_t bId);
     int64_t oneToAll(int64_t aId);
     std::shared_mutex m;

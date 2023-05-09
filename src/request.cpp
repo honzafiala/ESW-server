@@ -30,13 +30,35 @@ static void find_node(int64_t start, int rep, int64_t dst) {
 
 
 void ServerRequest::addWalk(Walk walk) {
-    Point a = {walk.locations(0).x(), walk.locations(0).y()};
-    for (int i = 0; i < walk.locations_size() - 1; i++) {
 
+
+    int64_t aId = -1;
+    int64_t bId = -1;
+
+    for (int i = 0; i < walk.locations_size() - 1; i++) {
+        Point a = {walk.locations(i).x(), walk.locations(i).y()};
         Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
-        graph.addPoints(a, b, walk.lengths(i));
-        a = b;
+
+        aId = bId;
+        if (aId < 0) aId = graph.findNear(0, a.x, a.y);
+        if (aId < 0) aId = graph.addNode(0, a.x, a.y, true);
+        
+        bId = graph.findNear(0, b.x, b.y);
+        if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
+        graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
+
+
+
+    // int64_t prev_dest = -1;
+
+    // Point a = {walk.locations(0).x(), walk.locations(0).y()};
+    // for (int i = 0; i < walk.locations_size() - 1; i++) {
+
+    //     Point a = {walk.locations(i).x(), walk.locations(i).y()};
+    //     Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
+    //     int64_t prev_dest = graph.addPoints(a, b, prev_dest, walk.lengths(i));
+    // }
 }
 
 
