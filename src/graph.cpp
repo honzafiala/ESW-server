@@ -28,7 +28,7 @@ static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> 
 
 
 Graph::Graph() {
-   printf("Created a graph instance\n");
+ //  printf("Created a graph instance\n");
 }
 
 struct PathNode {

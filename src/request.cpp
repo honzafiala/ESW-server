@@ -46,7 +46,7 @@ void ServerRequest::addWalk(Walk walk) {
         walk_nodes[i] = graph.findNear(0, walk.locations(i).x(), walk.locations(i).y());
         if (walk_nodes[i] == -1) newLocations++;
     }
-   // printf("Locations: %d\t%d\n", walk.locations_size(), newLocations);
+   printf("Locations: %d\t%d\n", walk.locations_size());
 
 
     for (int i = 0; i < walk.locations_size() - 1; i++) {
@@ -94,7 +94,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
         response.set_shortest_path_length(0);
         response.set_total_length(0);
     } else if (requestMessage.has_onetoone()) {
-        printf("OnetoOne request.\n"); 
+     //   printf("OnetoOne request.\n"); 
         OneToOne oneToOne = requestMessage.onetoone();
 
         Point src = {oneToOne.origin().x(), oneToOne.origin().y()};
@@ -108,13 +108,13 @@ Response ServerRequest::getResponse(Request requestMessage) {
 
         int64_t ret = graph.oneToOne(srcId, dstId);
 
-        printf("Path len: %d\n", ret);
+     //   printf("Path len: %d\n", ret);
 
         response.set_shortest_path_length(ret);
 
         response.set_total_length(0);
     } else if (requestMessage.has_onetoall()) {
-        printf("OnetoAll request.\n");
+      //  printf("OnetoAll request.\n");
         OneToAll oneToAll = requestMessage.onetoall();
 
         Point src = {oneToAll.origin().x(), oneToAll.origin().y()};
@@ -123,7 +123,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
 
         int64_t ret = graph.oneToAll(srcId);
 
-        printf("Path len: %ld\n", ret);
+      //  printf("Path len: %ld\n", ret);
 
         response.set_total_length(ret);
 

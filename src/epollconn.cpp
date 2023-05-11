@@ -24,7 +24,7 @@ TCPConnection::TCPConnection(int cfd, EpollInstance &e) : EpollFd(-1, e)
     fd = cfd;
     //registerFd(EPOLLIN | EPOLLET);
     registerFd(EPOLLIN | EPOLLET);
-    printf("New TCPConnection created\n");
+   // printf("New TCPConnection created\n");
 
     Graph::startTime = std::chrono::high_resolution_clock::now();
 }
@@ -38,7 +38,7 @@ TCPConnection::~TCPConnection()
 
 void send_len(int fd, int len) {
     char msg[10];
-    sprintf(msg, "%d\n", len);
+   // sprintf(msg, "%d\n", len);
     write(fd, msg, strlen(msg));
 }
 
@@ -70,20 +70,20 @@ int get_depth(int64_t nodeId) {
 
 void TCPConnection::handleEvent(uint32_t events)
 {
-    printf("\nEvents: %d\n", events);
+  //  printf("\nEvents: %d\n", events);
     if (events > 1) {
         close:
         unregisterFd();
         close(fd);
-        printf("Closing connection\n");
+     //   printf("Closing connection\n");
 
 
-        auto end = std::chrono::high_resolution_clock::now();
+      //  auto end = std::chrono::high_resolution_clock::now();
 
-    std::chrono::duration<double> duration = end - Graph::startTime;
+   // std::chrono::duration<double> duration = end - Graph::startTime;
 
     // Print the execution time
-    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+   // std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
   // printf("Maximum graph depth: %d\n", get_depth(0));
   //  printf("Number of nodes: %d\n", graph.nodes.size());
