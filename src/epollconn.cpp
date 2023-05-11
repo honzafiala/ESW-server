@@ -67,7 +67,7 @@ void TCPConnection::handleEvent(uint32_t events)
         int rec;
         while (true) {
             if (readData == messageSize && messageSize != 0) {
-                printf("Received request with size %d\n", messageSize);
+              //  printf("Received request with size %d\n", messageSize);
                 readData = 0;
                 messageSize = 0;
 
