@@ -139,13 +139,24 @@ int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
 }
 
 int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
+    Node n(x, y);
+
     if (nodes_map.count(Point(x / 500, y / 500)) == 0) {
         printf("Tile %d %d is empty\n", x / 500, y / 500);
         nodes_map.insert(make_pair(Point(x / 500, y / 500), std::vector<Node>()));
-        nodes_map[Point(x / 500, y / 500)].emplace_back(Node(x, y));
+        nodes_map[Point(x / 500, y / 500)].emplace_back(n);
     }
-        else nodes_map[Point(x / 500, y / 500)].emplace_back(Node(x, y));
+        else nodes_map[Point(x / 500, y / 500)].emplace_back(n);
+
     nodeCount++;
+
+
+    if (nodes.empty()) {
+        nodes.push_back(n);
+        return nodes.back().id;
+    }
+
+
 }
 
 void Graph::printTRee(int64_t nodeId) {

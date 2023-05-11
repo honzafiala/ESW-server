@@ -45,7 +45,7 @@ void ServerRequest::addWalk(Walk walk) {
         
         bId = graph.findNear(b.x, b.y);
         if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
-        graph.nodes[aId].add_neighbor(walk.lengths(i), nodes_map[Point()]);
+        graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
 
 
