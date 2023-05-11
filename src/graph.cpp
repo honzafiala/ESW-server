@@ -197,7 +197,7 @@ int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double
         return - 1;
     }
     double dist = dist_squared(point, make_pair(nodes[nodeId].x, nodes[nodeId].y));
-    if (dist <= distance_threshold * distance_threshold) {
+    if (dist <= 500 * 500) {
         return nodeId;
     } 
 
