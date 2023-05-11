@@ -59,6 +59,24 @@ int main(int argc, char *argv[])
 
     EpollSocket socket(ep, atoi(argv[1]));
 
+
+
+    // Graph test;
+    // test.addNode(0, 1100, 1000, true);
+    // test.addNode(0, 400, 550, true);
+
+    // for (auto pair : test.nodes_map) {
+    //     printf("%d %d---------------\n", pair.first.x, pair.first.y);
+    //     for (auto n : pair.second) {
+    //         printf("%d\t%d %d\n", n.id, n.x, n.y);
+    //     }
+    // }
+
+    // uint64_t id = test.findNear(510, 510);
+    // printf("Found: %d\n", id);
+    // printf("%d\n", test.nodeCount);
+    // while (1);
+
   //   std::vector<std::thread> threads; // Vector to store thread objects
 
     // for (int i = 0; i < atoi(argv[2]); ++i) {

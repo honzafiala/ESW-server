@@ -40,12 +40,12 @@ void ServerRequest::addWalk(Walk walk) {
         Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
 
         aId = bId;
-        if (aId < 0) aId = graph.findNear(0, a.x, a.y);
+        if (aId < 0) aId = graph.findNear(a.x, a.y);
         if (aId < 0) aId = graph.addNode(0, a.x, a.y, true);
         
-        bId = graph.findNear(0, b.x, b.y);
+        bId = graph.findNear(b.x, b.y);
         if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
-        graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
+        graph.nodes[aId].add_neighbor(walk.lengths(i), nodes_map[Point()]);
     }
 
 
@@ -81,8 +81,8 @@ Response ServerRequest::getResponse(Request requestMessage) {
         Point dst = {oneToOne.destination().x(), oneToOne.destination().y()};
 
         graph.m.lock_shared();
-        int64_t srcId = graph.findNear(0, src.x, src.y);
-        int64_t dstId = graph.findNear(0, dst.x, dst.y);
+        int64_t srcId = graph.findNear(src.x, src.y);
+        int64_t dstId = graph.findNear(dst.x, dst.y);
         graph.m.unlock_shared();
 
 
@@ -99,7 +99,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
 
         Point src = {oneToAll.origin().x(), oneToAll.origin().y()};
 
-        int64_t srcId = graph.findNear(0, src.x, src.y);
+        int64_t srcId = graph.findNear(src.x, src.y);
 
         int64_t ret = graph.oneToAll(srcId);
 

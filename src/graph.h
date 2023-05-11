@@ -16,9 +16,25 @@ struct Point {
     uint32_t x;
     uint32_t y;
 
+
+
+
     Point(uint32_t x_param, uint32_t y_param) : x(x_param), y(y_param) {}
 
 };
+struct PointComparator {
+    bool operator()(const Point& lhs, const Point& rhs) const {
+        if (lhs.x < rhs.x)
+            return true;
+        else if (lhs.x > rhs.x)
+            return false;
+        else
+            return lhs.y < rhs.y;
+    }
+};
+
+
+
 
 class Node {
 public:
@@ -52,14 +68,16 @@ class Graph {
 public:
     Graph();
     std::vector<Node> nodes;
+    std::map<Point, std::vector<Node>, PointComparator> nodes_map;
     int64_t addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis);
     void printTRee(int64_t nodeId);
-    int64_t findNear(int64_t nodeId, uint32_t x, uint32_t y);
+    int64_t findNear(uint32_t x, uint32_t y);
     int64_t searchTree(int64_t nodeId, std::pair<uint32_t, uint32_t> point, double distance_threshold, bool x_axis);
     int64_t addPoints(Point a, Point b, int64_t prev_dest, int32_t dist);
     uint64_t oneToOne(int64_t aId, int64_t bId);
     int64_t oneToAll(int64_t aId);
     std::shared_mutex m;
+    int nodeCount = 0;
 
 };
 

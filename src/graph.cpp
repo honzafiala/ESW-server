@@ -84,12 +84,12 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
    // m.lock_shared();
 
 
-    std::vector<uint64_t> dist(nodes.size(), numeric_limits<uint64_t>::max());
+    std::vector<uint64_t> dist(nodeCount, numeric_limits<uint64_t>::max());
     dist[aId] = 0;
 
-    std::vector<int64_t> prev(nodes.size(), -1);
+    std::vector<int64_t> prev(nodeCount, -1);
     
-    std::vector<bool> closed(nodes.size(), false);
+    std::vector<bool> closed(nodeCount, false);
 
 
 
@@ -126,11 +126,11 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
 
 int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
    // m.lock();
-        int64_t aId = findNear(0, a.x, a.y);
+        int64_t aId = findNear(a.x, a.y);
         if (aId < 0) aId = addNode(0, a.x, a.y, true);
         
         int64_t bId = prev_dest;
-        if (bId < 0) bId = findNear(0, b.x, b.y);
+        if (bId < 0) bId = findNear(b.x, b.y);
         if (bId < 0) bId = addNode(0, b.x, b.y, true);
         int64_t ret = bId;
         nodes[aId].add_neighbor(dist, bId);
@@ -139,49 +139,13 @@ int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
 }
 
 int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
-    if (nodes.empty()) {
-        nodes.push_back(Node(x, y));
-        return nodes.back().id;
-
+    if (nodes_map.count(Point(x / 500, y / 500)) == 0) {
+        printf("Tile %d %d is empty\n", x / 500, y / 500);
+        nodes_map.insert(make_pair(Point(x / 500, y / 500), std::vector<Node>()));
+        nodes_map[Point(x / 500, y / 500)].emplace_back(Node(x, y));
     }
-    enum side_t {LEFT, RIGHT};
-    side_t side;
-    int64_t nextNodeId;
-    if (is_x_axis) {
-        if (x < nodes[nodeId].x) {
-            nextNodeId = nodes[nodeId].left;
-            side = LEFT;
-        } else {
-            nextNodeId = nodes[nodeId].right;
-            side = RIGHT;
-        }
-    } else {
-        if (y < nodes[nodeId].y) {
-            nextNodeId = nodes[nodeId].left;
-            side = LEFT;
-        } else {
-            nextNodeId = nodes[nodeId].right;
-            side = RIGHT;
-        }
-    }
-
-    if (nextNodeId == -1) {
-        nodes.push_back(Node(x, y));
-        if (side == LEFT) nodes[nodeId].left = nodes.back().id;
-        else nodes[nodeId].right = nodes.back().id;
-        return nodes.back().id;
-    } else {
-        addNode(nextNodeId, x, y, !is_x_axis);
-    }
-    
-    // if (*child_ptr == -1) {
-    //     nodes.push_back(Node(x, y));
-    //     printf("Adding %d %d\n", x, y);
-    //     //*child_ptr = nodes.back().id;
-    //     printf("-------> right = %d (%p %p)\n", nodes[nodeId].right, &nodes[nodeId].right, child_ptr);
-    // } else {
-    //     addNode(*child_ptr, x, y, !is_x_axis);
-    // }
+        else nodes_map[Point(x / 500, y / 500)].emplace_back(Node(x, y));
+    nodeCount++;
 }
 
 void Graph::printTRee(int64_t nodeId) {
@@ -219,7 +183,19 @@ int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double
     return ret;
 }
 
-int64_t Graph::findNear(int64_t nodeId, uint32_t x, uint32_t y) {
-    int64_t ret = searchTree(nodeId, make_pair(x, y), (double) 500, true);
-    return ret;
+int64_t Graph::findNear(uint32_t x, uint32_t y) {
+   for (int x_move = -1; x_move <= 1; x_move++) {
+        for (int y_move = -1; y_move <= 1; y_move++) {
+            //if (nodes_map.count(Point(x /500 + x_move, y /500 + y_move)) == 0) continue;
+            printf("Tile %d %d:\n", x / 500 + x_move, y / 500 + y_move);
+            for (auto n : nodes_map[Point(x / 500 + x_move, y / 500 + y_move)]) {
+                printf("    %d %d %f\n", n.x, n.y, dist_squared(make_pair(x, y), make_pair(n.x, n.y)));
+                if (dist_squared(make_pair(x, y), make_pair(n.x, n.y)) < 500 * 500) {
+                    printf("Fount point near: %d %d\n", n.x, n.y);
+                    return n.id;
+                }
+            }
+        }
+   }
+   return -1;
 }
