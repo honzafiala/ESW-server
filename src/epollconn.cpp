@@ -86,8 +86,8 @@ void TCPConnection::handleEvent(uint32_t events)
     // Print the execution time
     std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
-    printf("Maximum graph depth: %d\n", get_depth(0));
-    printf("Number of nodes: %d\n", graph.nodes.size());
+  // printf("Maximum graph depth: %d\n", get_depth(0));
+  //  printf("Number of nodes: %d\n", graph.nodes.size());
 
 
 
