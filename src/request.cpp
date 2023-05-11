@@ -11,8 +11,6 @@ using namespace std;
 
 Graph graph;
 
-std::map<int64_t, int> onetoall_map;
-
 
 static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> b) {
     double dx = (double) a.first - (double) b.first;
@@ -112,15 +110,6 @@ Response ServerRequest::getResponse(Request requestMessage) {
         response.set_total_length(ret);
 
         response.set_shortest_path_length(0);
-
-
-        if (onetoall_map.count(ret) == 0) onetoall_map[ret] = 1;
-        else onetoall_map[ret]++;
-
-        printf("onetoall hash: ");
-        for (auto n : onetoall_map)
-            if (n.second > 1) printf("%d ", n.second);
-        printf("\n");
     }
 
     return response; 
