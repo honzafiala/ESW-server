@@ -36,16 +36,22 @@ void ServerRequest::addWalk(Walk walk) {
     int64_t aId = -1;
     int64_t bId = -1;
 
-    for (int i = 0; i < walk.locations_size() - 1; i++) {
-        Point a = {walk.locations(i).x(), walk.locations(i).y()};
-        Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
 
-        aId = bId;
-        if (aId < 0) aId = graph.findNear(0, a.x, a.y);
-        if (aId < 0) aId = graph.addNode(0, a.x, a.y, true);
+    std::vector<int64_t> walk_nodes(walk.locations_size(), -1);
+    for (int i = 0; i < walk.locations_size(); i++) {
+        walk_nodes[i] = graph.findNear(0, walk.locations(i).x(), walk.locations(i).y());
+    }
+
+
+    for (int i = 0; i < walk.locations_size() - 1; i++) {
+      //  Point a = {walk.locations(i).x(), walk.locations(i).y()};
+      //  Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
+
+        aId = walk_nodes[i];
+        if (aId < 0) aId = graph.addNode(0, walk.locations(i).x(), walk.locations(i).y(), true);
         
-        bId = graph.findNear(0, b.x, b.y);
-        if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
+        bId = walk_nodes[i + 1];
+        if (bId < 0) bId = graph.addNode(0, walk.locations(i + 1).x(), walk.locations(i + 1).y(), true);
         graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
 
