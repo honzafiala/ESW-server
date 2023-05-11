@@ -55,6 +55,19 @@ void TCPConnection::sendResponse(Response responseMessage) {
 }
 
 
+
+int get_depth(int64_t nodeId) {
+    if (nodeId == -1) return -1;
+    else if (graph.nodes[nodeId].right == -1 && graph.nodes[nodeId].left == -1) return 0;
+
+    else {
+        int left_depth = get_depth(graph.nodes[nodeId].left);
+        int right_depth = get_depth(graph.nodes[nodeId].right);
+        return left_depth > right_depth ? left_depth + 1: right_depth + 1;
+    }
+}
+
+
 void TCPConnection::handleEvent(uint32_t events)
 {
     printf("\nEvents: %d\n", events);
@@ -72,6 +85,11 @@ void TCPConnection::handleEvent(uint32_t events)
 
     // Print the execution time
     std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
+    printf("Maximum graph depth: %d\n", get_depth(0));
+    printf("Number of nodes: %d\n", graph.nodes.size());
+
+
 
         delete this;
     } else {

@@ -11,6 +11,9 @@
 
 using namespace std;
 
+Graph graph;
+
+
 
 int64_t Node::id_count = 0;
 
@@ -175,14 +178,7 @@ int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
         addNode(nextNodeId, x, y, !is_x_axis);
     }
     
-    // if (*child_ptr == -1) {
-    //     nodes.push_back(Node(x, y));
-    //     printf("Adding %d %d\n", x, y);
-    //     //*child_ptr = nodes.back().id;
-    //     printf("-------> right = %d (%p %p)\n", nodes[nodeId].right, &nodes[nodeId].right, child_ptr);
-    // } else {
-    //     addNode(*child_ptr, x, y, !is_x_axis);
-    // }
+
 }
 
 void Graph::printTRee(int64_t nodeId) {

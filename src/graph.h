@@ -7,6 +7,8 @@
 #include <vector>
 #include <shared_mutex>
 
+
+
 struct Edge {
     int64_t dist;
     int count;
@@ -63,5 +65,7 @@ public:
     static std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 
 };
+
+extern Graph graph;
 
 #endif // GRAPH_H

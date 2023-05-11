@@ -9,7 +9,6 @@
 
 using namespace std;
 
-Graph graph;
 
 
 static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> b) {
