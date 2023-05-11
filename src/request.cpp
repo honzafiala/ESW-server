@@ -81,10 +81,8 @@ Response ServerRequest::getResponse(Request requestMessage) {
         Point src = {oneToOne.origin().x(), oneToOne.origin().y()};
         Point dst = {oneToOne.destination().x(), oneToOne.destination().y()};
 
-        graph.m.lock_shared();
         int64_t srcId = graph.findNear(0, src.x, src.y);
         int64_t dstId = graph.findNear(0, dst.x, dst.y);
-        graph.m.unlock_shared();
 
 
         int64_t ret = graph.oneToOne(srcId, dstId);
