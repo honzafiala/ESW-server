@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     EpollSocket socket(ep, atoi(argv[1]));
 
-  //   std::vector<std::thread> threads; // Vector to store thread objects
+    std::vector<std::thread> threads; // Vector to store thread objects
 
     // for (int i = 0; i < atoi(argv[2]); ++i) {
     //     threads.emplace_back(threadFunction, i);
@@ -69,12 +69,6 @@ int main(int argc, char *argv[])
     // for (auto& thread : threads) {
     //     thread.join();
     // }
-
-   // int socket_fd = create_socket(atoi(argv[2]));
-
-
-   // registerFd(EPOLLIN | EPOLLHUP);
-
 
      while (1) {
      ep.waitAndHandleEvents();

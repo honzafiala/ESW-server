@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <map>
 #include <vector>
-#include <shared_mutex>
+#include <mutex>
 
 
 
@@ -61,7 +61,7 @@ public:
     int64_t addPoints(Point a, Point b, int64_t prev_dest, int32_t dist);
     uint64_t oneToOne(int64_t aId, int64_t bId);
     int64_t oneToAll(int64_t aId);
-    std::shared_mutex m;
+    std::recursive_mutex m;
     static std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 
 };

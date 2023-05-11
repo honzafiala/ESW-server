@@ -105,7 +105,10 @@ void TCPConnection::handleEvent(uint32_t events)
                 Request request;
                 request.ParseFromString(messageBuffer);
                 ServerRequest serverRequest;
+
+                graph.m.lock();
                 Response response = serverRequest.getResponse(request);
+                graph.m.unlock();
 
                 sendResponse(response);
 
