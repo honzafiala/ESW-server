@@ -4,6 +4,9 @@
 #include "graph.h"
 
 
+
+
+
 #include "proto/messages.pb.h"
 
 using namespace std;
@@ -57,7 +60,7 @@ Response ServerRequest::getResponse(Request requestMessage) {
     response.clear_errmsg();
 
     if (requestMessage.has_walk()) {
-        printf("Walk request.\n");
+       // printf("Walk request.\n");
         addWalk(requestMessage.walk());
         
         response.set_shortest_path_length(0);

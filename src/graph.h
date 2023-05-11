@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <shared_mutex>
 
@@ -68,7 +69,7 @@ class Graph {
 public:
     Graph();
     std::vector<Node> nodes;
-    std::map<uint64_t, std::vector<Node>> nodes_map;
+    std::unordered_map<uint64_t, std::vector<Node>> nodes_map;
     int64_t addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis);
     void printTRee(int64_t nodeId);
     int64_t findNear(uint32_t x, uint32_t y);
