@@ -60,6 +60,7 @@ public:
     uint64_t oneToOne(int64_t aId, int64_t bId);
     int64_t oneToAll(int64_t aId);
     std::shared_mutex m;
+    static std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
 
 };
 

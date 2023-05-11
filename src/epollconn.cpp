@@ -15,6 +15,7 @@
 
 #include "request.h"
 
+#include "graph.h"
 
 #include <algorithm>    // std::find
 
@@ -24,6 +25,8 @@ TCPConnection::TCPConnection(int cfd, EpollInstance &e) : EpollFd(-1, e)
     //registerFd(EPOLLIN | EPOLLET);
     registerFd(EPOLLIN | EPOLLET);
     printf("New TCPConnection created\n");
+
+    Graph::startTime = std::chrono::high_resolution_clock::now();
 }
 
 TCPConnection::~TCPConnection()
@@ -60,6 +63,16 @@ void TCPConnection::handleEvent(uint32_t events)
         unregisterFd();
         close(fd);
         printf("Closing connection\n");
+
+
+        auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate the duration
+    std::chrono::duration<double> duration = end - Graph::startTime;
+
+    // Print the execution time
+    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
         delete this;
     } else {
 

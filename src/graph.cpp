@@ -14,6 +14,7 @@ using namespace std;
 
 int64_t Node::id_count = 0;
 
+std::chrono::time_point<std::chrono::high_resolution_clock> Graph::startTime;
 
 static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> b) {
     double dx = (double) a.first - (double) b.first;
