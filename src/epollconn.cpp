@@ -78,12 +78,11 @@ void TCPConnection::handleEvent(uint32_t events)
      //   printf("Closing connection\n");
 
 
-      //  auto end = std::chrono::high_resolution_clock::now();
+//       auto end = std::chrono::high_resolution_clock::now();
 
-   // std::chrono::duration<double> duration = end - Graph::startTime;
+//    std::chrono::duration<double> duration = end - Graph::startTime;
 
-    // Print the execution time
-   // std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+//    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
   // printf("Maximum graph depth: %d\n", get_depth(0));
   //  printf("Number of nodes: %d\n", graph.nodes.size());

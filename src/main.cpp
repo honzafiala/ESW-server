@@ -59,10 +59,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    printf("Setting number of threads: %d\n", atoi(argv[2]));
-
-
     omp_set_num_threads(atoi(argv[2]));
+
+
+    printf("Setting number of threads: %d\n",     omp_get_num_threads());
+
+
 
 
 

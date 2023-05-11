@@ -41,12 +41,12 @@ void ServerRequest::addWalk(Walk walk) {
     std::vector<int64_t> walk_nodes(walk.locations_size(), -1);
 
     int newLocations = 0;
-    //#pragma omp parallel for schedule(static, 64)
+    #pragma omp parallel for num_threads(8)
     for (int i = 0; i < walk.locations_size(); i++) {
         walk_nodes[i] = graph.findNear(0, walk.locations(i).x(), walk.locations(i).y());
         if (walk_nodes[i] == -1) newLocations++;
     }
-   printf("Locations: %d\t%d\n", walk.locations_size());
+ //  printf("Locations: %d\t%d\n", walk.locations_size());
 
 
     for (int i = 0; i < walk.locations_size() - 1; i++) {
