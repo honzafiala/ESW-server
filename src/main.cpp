@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+#include <omp.h>
+
 
 using namespace std;
 
@@ -56,6 +58,14 @@ int main(int argc, char *argv[])
         cout << "PORT_NUM and NUM_THREADS arguments required." << endl;
         return 1;
     }
+
+    printf("Setting number of threads: %d\n", atoi(argv[2]));
+
+
+    omp_set_num_threads(atoi(argv[2]));
+
+
+
 
     EpollSocket socket(ep, atoi(argv[1]));
 

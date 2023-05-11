@@ -1,4 +1,7 @@
 protobuf_dep = dependency('protobuf')
+omp = dependency('openmp')
 srcs = ['main.cpp', 'epollinstance.cpp', 'epollsocket.cpp', 'proto/messages.pb.cc', 'epollconn.cpp', 'epollfd.cpp', 'request.cpp', 'graph.cpp']
 executable('main', srcs,
-  dependencies: [protobuf_dep])
+  dependencies: [protobuf_dep, omp])
+
+

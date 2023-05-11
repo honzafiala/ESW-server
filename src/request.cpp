@@ -3,6 +3,7 @@
 #include <iostream>
 #include "graph.h"
 #include <map>
+#include <omp.h>
 
 
 #include "proto/messages.pb.h"
@@ -38,9 +39,14 @@ void ServerRequest::addWalk(Walk walk) {
 
 
     std::vector<int64_t> walk_nodes(walk.locations_size(), -1);
+
+    int newLocations = 0;
+    #pragma omp parallel for
     for (int i = 0; i < walk.locations_size(); i++) {
         walk_nodes[i] = graph.findNear(0, walk.locations(i).x(), walk.locations(i).y());
+        if (walk_nodes[i] == -1) newLocations++;
     }
+   // printf("Locations: %d\t%d\n", walk.locations_size(), newLocations);
 
 
     for (int i = 0; i < walk.locations_size() - 1; i++) {
@@ -48,10 +54,17 @@ void ServerRequest::addWalk(Walk walk) {
       //  Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
 
         aId = walk_nodes[i];
-        if (aId < 0) aId = graph.addNode(0, walk.locations(i).x(), walk.locations(i).y(), true);
+        if (aId < 0) {
+            aId = graph.addNode(0, walk.locations(i).x(), walk.locations(i).y(), true);
+            walk_nodes[i] = aId;
+        }
         
         bId = walk_nodes[i + 1];
-        if (bId < 0) bId = graph.addNode(0, walk.locations(i + 1).x(), walk.locations(i + 1).y(), true);
+        if (bId < 0) {
+            bId = graph.addNode(0, walk.locations(i + 1).x(), walk.locations(i + 1).y(), true);
+            walk_nodes[i + 1] = bId;
+
+        }
         graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
 
