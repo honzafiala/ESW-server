@@ -36,7 +36,6 @@ void ServerRequest::addWalk(Walk walk) {
     int64_t aId = -1;
     int64_t bId = -1;
 
-    graph.m.lock();
     for (int i = 0; i < walk.locations_size() - 1; i++) {
         Point a = {walk.locations(i).x(), walk.locations(i).y()};
         Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
@@ -49,7 +48,7 @@ void ServerRequest::addWalk(Walk walk) {
         if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
         graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
-    graph.m.unlock();
+
 
 
     // int64_t prev_dest = -1;
@@ -82,10 +81,10 @@ Response ServerRequest::getResponse(Request requestMessage) {
         Point src = {oneToOne.origin().x(), oneToOne.origin().y()};
         Point dst = {oneToOne.destination().x(), oneToOne.destination().y()};
 
-        graph.m.lock();
+        graph.m.lock_shared();
         int64_t srcId = graph.findNear(0, src.x, src.y);
         int64_t dstId = graph.findNear(0, dst.x, dst.y);
-        graph.m.unlock();
+        graph.m.unlock_shared();
 
 
         int64_t ret = graph.oneToOne(srcId, dstId);

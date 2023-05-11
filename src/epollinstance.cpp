@@ -4,11 +4,6 @@
 #include <stdexcept>
 #include "epollinstance.h"
 #include "epollfd.h"
-#include <thread>
-#include <iostream>
-
-using namespace std;
-
 
 EpollInstance::EpollInstance()
 {
@@ -54,7 +49,7 @@ void EpollInstance::waitAndHandleEvents()
     struct epoll_event events[EPOLL_MAX_EVENTS];
     int i, n;
     n = epoll_wait(epollFd, events, EPOLL_MAX_EVENTS, -1);
-    std::cout << "Thread " << std::this_thread::get_id() << ": " << n << " events" << std::endl;
+    printf("%d events on epoll\n", n);
     if (n == -1) {
         throw std::runtime_error(std::string("epoll_wait: ") + std::strerror(errno));
     }

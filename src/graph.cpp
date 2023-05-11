@@ -44,8 +44,6 @@ struct PathNode {
 
 
 int64_t Graph::oneToAll(int64_t aId) {
-     std::lock_guard<std::recursive_mutex> lock(m);
-
   //  m.lock_shared();
 
     std::vector<uint64_t> dist(nodes.size(), static_cast<uint64_t>(std::numeric_limits<uint64_t>::max()));
@@ -87,8 +85,6 @@ int64_t Graph::oneToAll(int64_t aId) {
 
 
 uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
-     std::lock_guard<std::recursive_mutex> lock(m);
-
    // m.lock_shared();
 
 
@@ -133,7 +129,7 @@ uint64_t Graph::oneToOne(int64_t aId, int64_t bId) {
 
 
 int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
-        std::lock_guard<std::recursive_mutex> lock(m);
+   // m.lock();
         int64_t aId = findNear(0, a.x, a.y);
         if (aId < 0) aId = addNode(0, a.x, a.y, true);
         
@@ -147,7 +143,6 @@ int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
 }
 
 int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
-     std::lock_guard<std::recursive_mutex> lock(m);
     if (nodes.empty()) {
         nodes.push_back(Node(x, y));
         return nodes.back().id;
@@ -194,7 +189,6 @@ void Graph::printTRee(int64_t nodeId) {
 }
 
 int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double distance_threshold, bool x_axis) {
-
     if (nodeId == -1 || nodes.empty()) {
         return - 1;
     }
@@ -223,7 +217,6 @@ int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double
 }
 
 int64_t Graph::findNear(int64_t nodeId, uint32_t x, uint32_t y) {
-     std::lock_guard<std::recursive_mutex> lock(m);
     int64_t ret = searchTree(nodeId, make_pair(x, y), (double) 500, true);
     return ret;
 }
