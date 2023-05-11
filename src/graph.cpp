@@ -142,7 +142,6 @@ int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
     Node n(x, y);
 
     if (nodes_map.count(Point(x / 500, y / 500)) == 0) {
-        printf("Tile %d %d is empty\n", x / 500, y / 500);
         nodes_map.insert(make_pair(Point(x / 500, y / 500), std::vector<Node>()));
         nodes_map[Point(x / 500, y / 500)].emplace_back(n);
     }
@@ -151,10 +150,8 @@ int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
     nodeCount++;
 
 
-    if (nodes.empty()) {
-        nodes.push_back(n);
-        return nodes.back().id;
-    }
+    nodes.push_back(n);
+    return nodes.back().id;
 
 
 }
@@ -166,43 +163,12 @@ void Graph::printTRee(int64_t nodeId) {
     printTRee(nodes[nodeId].right);
 }
 
-int64_t Graph::searchTree(int64_t nodeId, pair<uint32_t, uint32_t> point, double distance_threshold, bool x_axis) {
-    if (nodeId == -1 || nodes.empty()) {
-        return - 1;
-    }
-    double dist = dist_squared(point, make_pair(nodes[nodeId].x, nodes[nodeId].y));
-    if (dist <= distance_threshold * distance_threshold) {
-        return nodeId;
-    } 
-
-    int64_t ret = -1;
-    if (x_axis) {
-        if (point.first - distance_threshold <= nodes[nodeId].x) {
-            ret = searchTree(nodes[nodeId].left, point, distance_threshold, !x_axis);
-        }
-        if (point.first + distance_threshold >= nodes[nodeId].x) {
-            if (ret == - 1) ret = searchTree(nodes[nodeId].right, point, distance_threshold, !x_axis);
-        }
-    } else {
-       if (point.second - distance_threshold <= nodes[nodeId].y) {
-            ret = searchTree(nodes[nodeId].left, point, distance_threshold, !x_axis);
-        }
-        if (point.second + distance_threshold >= nodes[nodeId].y) {
-            if (ret == - 1) ret = searchTree(nodes[nodeId].right, point, distance_threshold, !x_axis);
-        }
-    }
-    return ret;
-}
-
 int64_t Graph::findNear(uint32_t x, uint32_t y) {
    for (int x_move = -1; x_move <= 1; x_move++) {
         for (int y_move = -1; y_move <= 1; y_move++) {
             //if (nodes_map.count(Point(x /500 + x_move, y /500 + y_move)) == 0) continue;
-            printf("Tile %d %d:\n", x / 500 + x_move, y / 500 + y_move);
             for (auto n : nodes_map[Point(x / 500 + x_move, y / 500 + y_move)]) {
-                printf("    %d %d %f\n", n.x, n.y, dist_squared(make_pair(x, y), make_pair(n.x, n.y)));
                 if (dist_squared(make_pair(x, y), make_pair(n.x, n.y)) < 500 * 500) {
-                    printf("Fount point near: %d %d\n", n.x, n.y);
                     return n.id;
                 }
             }
