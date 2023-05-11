@@ -68,7 +68,7 @@ class Graph {
 public:
     Graph();
     std::vector<Node> nodes;
-    std::map<Point, std::vector<Node>, PointComparator> nodes_map;
+    std::map<uint64_t, std::vector<Node>> nodes_map;
     int64_t addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis);
     void printTRee(int64_t nodeId);
     int64_t findNear(uint32_t x, uint32_t y);
@@ -78,6 +78,7 @@ public:
     int64_t oneToAll(int64_t aId);
     std::shared_mutex m;
     int nodeCount = 0;
+    uint64_t makeHash(uint32_t x, uint32_t y);
 
 };
 

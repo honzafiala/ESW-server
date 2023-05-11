@@ -21,6 +21,11 @@ static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> 
     return dx * dx + dy * dy;
 }
 
+uint64_t Graph::makeHash(uint32_t x, uint32_t y) {
+    uint64_t ret = (x / 500) << 32 + (y / 500);
+}
+
+
 
 
 Graph::Graph() {
@@ -141,11 +146,11 @@ int64_t Graph::addPoints(Point a, Point b, int64_t prev_dest, int32_t dist) {
 int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
     Node n(x, y);
 
-    if (nodes_map.count(Point(x / 500, y / 500)) == 0) {
-        nodes_map.insert(make_pair(Point(x / 500, y / 500), std::vector<Node>()));
-        nodes_map[Point(x / 500, y / 500)].emplace_back(n);
+    if (nodes_map.count(makeHash(x, y)) == 0) {
+        nodes_map.insert(make_pair(makeHash(x, y), std::vector<Node>()));
+        nodes_map[makeHash(x, y)].emplace_back(n);
     }
-        else nodes_map[Point(x / 500, y / 500)].emplace_back(n);
+        else nodes_map[makeHash(x, y)].emplace_back(n);
 
     nodeCount++;
 
@@ -167,7 +172,7 @@ int64_t Graph::findNear(uint32_t x, uint32_t y) {
    for (int x_move = -1; x_move <= 1; x_move++) {
         for (int y_move = -1; y_move <= 1; y_move++) {
             //if (nodes_map.count(Point(x /500 + x_move, y /500 + y_move)) == 0) continue;
-            for (auto n : nodes_map[Point(x / 500 + x_move, y / 500 + y_move)]) {
+            for (auto n : nodes_map[makeHash(x + 500 * x_move, y + 500 * y_move)]) {
                 if (dist_squared(make_pair(x, y), make_pair(n.x, n.y)) < 500 * 500) {
                     return n.id;
                 }

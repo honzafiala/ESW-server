@@ -17,21 +17,10 @@ static double dist_squared(pair<uint32_t, uint32_t> a, pair<uint32_t, uint32_t> 
 }
 
 
-static void find_node(int64_t start, int rep, int64_t dst) {
-    if (start == -1) return;
-    for (int i = 0; i < rep; i++) printf(" ");
-    printf("%d\n", start);
-
-
-    find_node(graph.nodes[start].left, rep + 1, dst);
-    find_node(graph.nodes[start].right, rep + 1, dst);
-}
 
 
 
 void ServerRequest::addWalk(Walk walk) {
-
-
     int64_t aId = -1;
     int64_t bId = -1;
 
