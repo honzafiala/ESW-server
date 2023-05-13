@@ -175,7 +175,7 @@ int64_t Graph::addNode(int64_t nodeId, uint32_t x, uint32_t y, bool is_x_axis) {
         else nodes[nodeId].right = nodes.back().id;
         return nodes.back().id;
     } else {
-        addNode(nextNodeId, x, y, !is_x_axis);
+        return addNode(nextNodeId, x, y, !is_x_axis);
     }
     
 

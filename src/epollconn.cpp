@@ -70,7 +70,6 @@ int get_depth(int64_t nodeId) {
 
 void TCPConnection::handleEvent(uint32_t events)
 {
-    printf("\nEvents: %d\n", events);
     if (events > 1) {
         close:
         unregisterFd();
@@ -78,7 +77,7 @@ void TCPConnection::handleEvent(uint32_t events)
         printf("Closing connection\n");
 
 
-        auto end = std::chrono::high_resolution_clock::now();
+   //     auto end = std::chrono::high_resolution_clock::now();
 
     // Calculate the duration
    // std::chrono::duration<double> duration = end - Graph::startTime;
@@ -101,13 +100,10 @@ void TCPConnection::handleEvent(uint32_t events)
               //  printf("Received request with size %d\n", messageSize);
                 readData = 0;
                 messageSize = 0;
-
                 Request request;
                 request.ParseFromString(messageBuffer);
                 ServerRequest serverRequest;
-                graph.m.lock();
                 Response response = serverRequest.getResponse(request);
-                graph.m.unlock();
 
                 sendResponse(response);
 
@@ -119,7 +115,6 @@ void TCPConnection::handleEvent(uint32_t events)
                 total += rec;
                 messageSize = ntohl(messageSize);
                 readData = 0;
-               // printf("Size: %d\n", messageSize);
             } 
             if (readData < messageSize) {
                 if (readData == 0) messageBuffer.resize(messageSize);
@@ -128,7 +123,6 @@ void TCPConnection::handleEvent(uint32_t events)
                 if (rec <= 0) return;
                 total += rec;
                 readData += rec;
-               // printf("Read %d, %d\n", rec, total);
             }
         }
     }

@@ -56,5 +56,6 @@
         "ratio": "cpp",
         "thread": "cpp",
         "cerrno": "cpp"
-    }
+    },
+    "cortex-debug.armToolchainPath": "/home/honza/.config/Code/User/globalStorage/bmd.stm32-for-vscode/@xpack-dev-tools/arm-none-eabi-gcc/11.2.1-1.2.2/.content/bin"
 }

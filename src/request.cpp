@@ -41,11 +41,17 @@ void ServerRequest::addWalk(Walk walk) {
         Point b = {walk.locations(i + 1).x(), walk.locations(i + 1).y()};
 
         aId = bId;
-        if (aId < 0) aId = graph.findNear(0, a.x, a.y);
-        if (aId < 0) aId = graph.addNode(0, a.x, a.y, true);
-        
+        if (aId < 0) {
+            aId = graph.findNear(0, a.x, a.y);
+        }
+        if (aId < 0) {
+            aId = graph.addNode(0, a.x, a.y, true);
+        }
+
         bId = graph.findNear(0, b.x, b.y);
-        if (bId < 0) bId = graph.addNode(0, b.x, b.y, true);
+        if (bId < 0) {
+            bId = graph.addNode(0, b.x, b.y, true);
+        }
         graph.nodes[aId].add_neighbor(walk.lengths(i), bId);
     }
 
@@ -69,7 +75,6 @@ Response ServerRequest::getResponse(Request requestMessage) {
     response.clear_errmsg();
 
     if (requestMessage.has_walk()) {
-      //  printf("Walk request.\n");
         addWalk(requestMessage.walk());
         
         response.set_shortest_path_length(0);
